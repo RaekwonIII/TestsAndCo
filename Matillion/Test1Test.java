@@ -32,8 +32,7 @@ public class Test1Test {
 		
 		s1 = "see you at the pub";
 		s2 = s1.toUpperCase();
-		assertEquals(14, t1.stringDiff(s1, s2));
-//		fail("Not yet implemented");
+		assertEquals(s1.length()-4, t1.stringDiff(s1, s2));
 	}
 
 }

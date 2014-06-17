@@ -89,7 +89,7 @@ public class Test3 {
 		
 		reader.close();
 		
-		return text.replaceAll("[, ]", "+");
+		return text;
 	}
 	
 	/**
@@ -115,6 +115,33 @@ public class Test3 {
 	    scan.close();
 	    
 	    return str;
+	}
+	
+	private String parseJSON(String response) throws JSONException{
+		
+//	    build a JSON object
+	    JSONObject obj = new JSONObject(response);
+	    
+	    if (! obj.getString("status").equals("OK")){
+	    	System.out.println("Query Error: " + obj.getString("status"));
+	        return null; // bad query
+	    }
+	    
+	    JSONObject element = obj.getJSONArray("rows").getJSONObject(0).getJSONArray("elements").getJSONObject(0);
+	    if (! element.getString("status").equals("OK")){
+	    	System.out.println("Address Error: " + element.getString("status"));
+	    	
+	    	// Some addresses in the .csv file give NOT_FOUND status,
+	    	// I tried the same address in google maps too with same result.
+	    	// A quick fix I found was to remove the last part of the address,
+	    	// that sometimes let google maps find the city, but it could be tricky
+	    	// and added complexity to the program. Might be better to revise the 
+	    	// address list instead.
+	        return null; // probably NOT_FOUND exception
+	    }
+	    else {
+	    return element.getJSONObject("duration").getString("text");
+	    }
 	}
 	
 	/**
@@ -145,28 +172,31 @@ public class Test3 {
 //		System.out.println(originAddr);
 //		System.out.println(destAddr);
 
-		String query = String.format(queryFormat, originAddr, destAddr);
+		String query = String.format(queryFormat, originAddr.replaceAll("[, ]", "+"), destAddr.replaceAll("[, ]", "+"));
 //		System.out.println(askGoogle(query));
 		
-//	    build a JSON object
-	    JSONObject obj = new JSONObject(askGoogle(query));
-	    if (! obj.getString("status").equals("OK")){
-	    	System.out.println(obj.getString("status"));
-	        return; // bad query
-	    }
+	    String result = parseJSON(askGoogle(query));
 	    
-	    JSONObject element = obj.getJSONArray("rows").getJSONObject(0).getJSONArray("elements").getJSONObject(0);
-	    if (! element.getString("status").equals("OK")){
-	    	System.out.println(element.getString("status"));
-	        return; // probably NOT_FOUND exception
+	    if (result != null)
+	    {
+	    	System.out.println(String.format(resultFormat, result, originAddr.split("\\+")[0], destAddr.split("\\+")[0]));
 	    }
-	    
-	    String result = element.getJSONObject("duration").getString("text");
-//		System.out.println(element.toString());
 		
-	    System.out.println(String.format(resultFormat, result, originAddr.split("\\+")[0], destAddr.split("\\+")[0]));
-	    
 	    return;
 	}
 	
+	public static void main(String[] args) {
+
+		Test3 t3 = new Test3();
+		
+		try {
+			t3.distanceCalc();
+		} catch (IOException e) {
+//			e.printStackTrace();
+			System.err.println(e.getMessage());
+		} catch (JSONException e) {
+//			e.printStackTrace();
+			System.err.println(e.getMessage());
+		}
+	}
 }
