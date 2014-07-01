@@ -1,4 +1,4 @@
-package com.Massimo.Matillion.Test;
+package com.Massimo.MyTest.Test;
 
 /*
  * Test 1
@@ -18,16 +18,16 @@ public class Test1 {
 
 	/**
 	 * public int stringDiff (String str1, String str2)
-	 * 
+	 *
 	 * Compares two strings of equal length, checks the i-th character of
 	 * each string pairwise, counting the differences. Returns the count
-	 * 
+	 *
 	 * @param str1 first string to compare
 	 * @param str2 second string to compare
 	 * @return     the number of different characters between the two strings
 	 */
 	public int stringDiff (String str1, String str2){
-		
+
 		// check characters pairwise between the two strings
 		// takes O(n) time complexity, no faster implementations
 		// comes to my mind
@@ -36,7 +36,7 @@ public class Test1 {
 			if (str1.charAt(i) != str2.charAt(i))
 				count++;
 		}
-		
+
 		return count;
 	}
 }

@@ -1,4 +1,4 @@
-package com.Massimo.Matillion.Test;
+package com.Massimo.MyTest.Test;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
