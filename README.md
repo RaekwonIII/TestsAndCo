@@ -8,4 +8,4 @@ For some of those, mostly the hardest ones, I took a sneak peak at solutions aro
 http://codesays.com/solutions-to-training-by-codility/
 he's a real bad ass.
 
-As for the rest, the lame Python exercise, the subtitle extractor, the Matillion Test and the Test1, Test2 and Test3 in Codility folder, that's entirely my job
+As for the rest, the lame Python exercise, the subtitle extractor, the files named "Test" in Codility folder and some other, those entirely my job
